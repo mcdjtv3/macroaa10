@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz : Démarche Marketing & Définition des Marchés</title>
+    <style>
+        body {
+            font-family: 'Mayan', sans-serif;
+            margin: 0;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+            text-align: center;
+        }
+        .quiz-container, .summary {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            background-image: url('images/back.jpg.webp');
+            background-size: cover;
+            background-position: center;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #000;
+        }
+        .choices {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin-left: 20%;
+        }
+        .choices li {
+            margin: 8px 0;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #FF0000;
+            color: white;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #CC0000;
+        }
+        .summary {
+            display: none;
+        }
+        .summary ul {
+            list-style: none;
+            padding: 0;
+        }
+        .summary li {
+            text-align: left;
+            margin-left: 20%;
+            margin-bottom: 10px;
+        }
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+        .score {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .quiz-container, .summary {
+                max-width: 90%;
+                margin: 20px auto;
+                padding: 15px;
+                border-radius: 10px;
+            }
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+        @media (max-width: 480px) {
+            .quiz-container, .summary {
+                padding: 10px;
+                margin: 10px;
+                border-radius: 10px;
+            }
+            .question {
+                font-size: 16px;
+            }
+            button {
+                font-size: 12px;
+                padding: 6px 12px;
+                border-radius: 10px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .quiz-container, .summary {
+                max-width: 800px;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz-container" id="quiz-container">
+    <h2>QCM ENTRAINEMENT - The IS-LM-PC Model and Macroeconomic Dynamics</h2>
+    <div id="question-container">
+        <!-- Les questions seront affichées ici dynamiquement -->
+    </div>
+    <button id="next-button" onclick="nextQuestion()">Suivant</button>
+</div>
+
+<div class="summary" id="summary">
+    <h3>Récapitulatif</h3>
+    <ul id="summary-list">
+        <!-- Le récapitulatif des réponses sera affiché ici -->
+    </ul>
+    <div class="score" id="score"></div>
+    <button onclick="restartQuiz()">Recommencer</button>
+</div>
+
+<script>
+    const quizData = [
+        { question: "What does the IS curve represent in the IS-LM-PC model?", choices: ["Equilibrium in the financial markets", "Equilibrium in the goods market", "The relationship between inflation and unemployment", "The relationship between interest rates and inflation"], correct: 1 },
+        { question: "What happens to output in the medium run according to the IS-LM-PC model?", choices: ["Output converges to its potential level", "Output remains permanently above potential", "Output increases indefinitely", "Output decreases below potential"], correct: 0 },
+        { question: "How does the central bank respond to expansionary fiscal policy in the medium run?", choices: ["By decreasing the interest rate", "By increasing the interest rate to bring inflation back to target", "By maintaining the current interest rate", "By reducing government spending"], correct: 1 },
+        { question: "What happens if the central bank does not respond to rising inflation expectations?", choices: ["The Phillips Curve shifts downward", "The credibility of the central bank increases", "Inflation accelerates, leading to a wage-price spiral", "Output remains above its natural level"], correct: 2 },
+        { question: "What is the zero lower bound (ZLB), and how does it affect monetary policy?", choices: ["It prevents nominal interest rates from falling below zero, limiting monetary policy effectiveness", "It prevents inflation from rising above zero, ensuring price stability", "It allows the central bank to lower interest rates below zero during deflation", "It guarantees that interest rates will always be positive"], correct: 0 },
+        { question: "What is the result of a deflation spiral in the IS-LM-PC model?", choices: ["Deflation leads to higher output and lower unemployment", "Deflation leads to higher real interest rates, lower output, and more deflation", "Deflation increases inflation expectations", "Deflation causes an increase in government spending"], correct: 1 },
+        { question: "How does an oil price shock affect the IS-LM-PC model in the short run?", choices: ["It leads to higher output and lower inflation", "It increases production costs, leading to higher inflation and lower output", "It reduces inflation and causes output to rise", "It has no effect on inflation or output"], correct: 1 },
+        { question: "What happens to inflation and output after a productivity boom in the IS-LM-PC model?", choices: ["Output decreases and inflation increases", "Output increases and inflation decreases", "Output remains unchanged, and inflation rises", "Both output and inflation decrease"], correct: 1 },
+        { question: "What is the neutrality of money in the medium run?", choices: ["Changes in the money supply have no effect on real variables like output or unemployment", "Changes in the money supply increase inflation but not output", "The money supply affects output but not prices", "The money supply determines the natural rate of unemployment"], correct: 0 },
+        { question: "What effect does fiscal consolidation have in the short run according to the IS-LM-PC model?", choices: ["It increases output and inflation", "It decreases output and inflation", "It increases output but decreases inflation", "It has no impact on output"], correct: 1 },
+        { question: "In response to higher productivity, what happens to the Phillips Curve?", choices: ["The Phillips Curve shifts upward, leading to higher inflation", "The Phillips Curve shifts downward, reducing inflationary pressure", "The Phillips Curve flattens, indicating no change in inflation", "The Phillips Curve remains unchanged"], correct: 1 },
+        { question: "How does a permanent oil price increase affect the economy in the medium run?", choices: ["It leads to higher output and lower inflation", "It results in lower output and higher inflation (stagflation)", "It reduces both output and inflation", "It increases output and stabilizes inflation"], correct: 1 },
+        { question: "What happens to the LM curve when the central bank raises interest rates in response to rising inflation?", choices: ["The LM curve shifts downward", "The LM curve shifts upward", "The LM curve remains horizontal", "The LM curve shifts to the right"], correct: 1 },
+        { question: "What is the effect of monetary tightening on output in the IS-LM-PC model?", choices: ["Output increases due to higher investment", "Output decreases as interest rates rise", "Output remains unchanged", "Output fluctuates without a clear trend"], correct: 1 },
+        { question: "How does an increase in the natural level of output affect the IS-LM-PC model?", choices: ["The IS curve shifts left", "The LM curve shifts upward", "The Phillips Curve shifts downward", "Output decreases in the short run"], correct: 2 }
+    ];
+
+    let currentQuestionIndex = 0;
+    let selectedAnswers = [];
+
+    function loadQuestion() {
+        const container = document.getElementById('question-container');
+        container.innerHTML = '';
+
+        const questionData = quizData[currentQuestionIndex];
+        const questionElem = document.createElement('div');
+        questionElem.className = 'question';
+        questionElem.textContent = questionData.question;
+
+        const choicesElem = document.createElement('ul');
+        choicesElem.className = 'choices';
+
+        questionData.choices.forEach((choice, index) => {
+            const choiceElem = document.createElement('li');
+            const choiceInput = document.createElement('input');
+            choiceInput.type = 'radio';
+            choiceInput.name = 'choice';
+            choiceInput.value = index;
+            choiceInput.id = `choice${index}`;
+            
+            const choiceLabel = document.createElement('label');
+            choiceLabel.htmlFor = `choice${index}`;
+            choiceLabel.textContent = choice;
+
+            choiceElem.appendChild(choiceInput);
+            choiceElem.appendChild(choiceLabel);
+            choicesElem.appendChild(choiceElem);
+        });
+
+        container.appendChild(questionElem);
+        container.appendChild(choicesElem);
+    }
+
+    function nextQuestion() {
+        const selectedChoice = document.querySelector('input[name="choice"]:checked');
+        if (!selectedChoice) {
+            alert("Veuillez sélectionner une réponse !");
+            return;
+        }
+
+        selectedAnswers.push(parseInt(selectedChoice.value));
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < quizData.length) {
+            loadQuestion();
+        } else {
+            showSummary();
+        }
+    }
+
+    function showSummary() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const summary = document.getElementById('summary');
+        summary.style.display = 'block';
+
+        const summaryList = document.getElementById('summary-list');
+        summaryList.innerHTML = '';
+
+        let correctAnswers = 0;
+
+        quizData.forEach((q, index) => {
+            const summaryItem = document.createElement('li');
+            summaryItem.innerHTML = `
+                <strong>${q.question}</strong><br>
+                <div style="text-align: left; margin-left: 20%;">
+                    Votre réponse: ${q.choices[selectedAnswers[index]]} - 
+                    ${selectedAnswers[index] === q.correct ? '<span class="correct">Correct</span>' : '<span class="incorrect">Incorrect</span>'}<br>
+                    Bonne réponse: ${q.choices[q.correct]}
+                </div>
+            `;
+            summaryList.appendChild(summaryItem);
+            if (selectedAnswers[index] === q.correct) {
+                correctAnswers++;
+            }
+        });
+
+        document.getElementById('score').textContent = `Score: ${correctAnswers} / ${quizData.length}`;
+    }
+
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        selectedAnswers = [];
+        document.getElementById('summary').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        loadQuestion();
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+
+
+</html>
